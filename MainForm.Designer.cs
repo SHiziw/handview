@@ -384,7 +384,8 @@
             "COM2",
             "COM3",
             "COM4",
-            "COM5"});
+            "COM5",
+            "COM6"});
             this.comboBox1.Location = new System.Drawing.Point(430, 268);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(75, 23);

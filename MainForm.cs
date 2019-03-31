@@ -898,117 +898,62 @@ namespace hands_viewer.cs
         private int TakeCount = 0;
         private void infoTextBox_TextChanged(object sender, EventArgs e )
         {
-            TakeCount++;
-            if(TakeCount>=3)//进入发送程序
+            try
             {
-                infoTextBox.Enabled = false;
-                TakeCount = 0;
-                try
+
+                if (sp.IsOpen == false)
                 {
-                    
-                    if (sp.IsOpen == false)
+                    MessageBox.Show("串口未打开", "提示", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+                else if (sp.IsOpen == true && infoTextBox.Text != "")//判断串口是否打开
+                {
+
+                    if (infoTextBox.Text == "fist")
                     {
-                        MessageBox.Show("串口未打开", "提示", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    }
-                    else if (sp.IsOpen == true && infoTextBox.Text != "")//判断串口是否打开
-                    {
+                        sp.Write("fist");//应该设置一个定时器来确定发送间隔具体需要调试确定
+                        infoTextBox.Clear();
+                        Thread.Sleep(100);
+                        infoTextBox.Enabled = true;
+                        sp.Close();
 
-                        int count = 0;
-                        int count1 = 0;
-                        int count2 = 0;
-                        int count3 = 0;
-                        count1 = ReturnStringX("fist", infoTextBox.Text);
-                        count2 = ReturnStringX("v_sign", infoTextBox.Text);
-                        count3 = ReturnStringX("spreadfingers", infoTextBox.Text);
-                        count = FindMax(count1, count2, count3);
-                        if (count == count1)
-                        {
-                            sp.Write("fist");//应该设置一个定时器来确定发送间隔具体需要调试确定
-                            infoTextBox.Clear();
-                            Thread.Sleep(1000);
-                            infoTextBox.Enabled = true;
-
-                        }
-                        else if (count == count2)
-                        {
-                            sp.Write("v_sign");
-                            infoTextBox.Clear();
-                            Thread.Sleep(1000);
-                            infoTextBox.Enabled = true;
-                        }
-                        else if (count == count3)
-                        {
-                            sp.Write("spreadfinger");
-                            infoTextBox.Clear();
-                            Thread.Sleep(1000);
-                            infoTextBox.Enabled = true;
-                        }
-                        //string str = infoTextBox.Text;
-                        //string substr = "fist";
-                        //string substr2 = "click";
-                        //string substr3 = "spreadfinger";
-                        //int Count1 = 0;
-                        //int Count2 = 0;
-                        //int Count3 = 0;
-                        //for (int i = 0; i <= str.Length - substr.Length;)
-                        //{
-                        //    var index = str.IndexOf(substr, i);
-                        //    if (index < 0) break;
-                        //    Count1++;
-                        //    i += index + 1;
-                        //}
-                        //for (int i = 0; i <= str.Length - substr2.Length;)
-                        //{
-                        //    var index = str.IndexOf(substr2, i);
-                        //    if (index < 0) break;
-                        //    Count2++;
-                        //    i += index + 1;
-                        //}
-                        //for (int i = 0; i <= str.Length - substr3.Length;)
-                        //{
-                        //    var index = str.IndexOf(substr3, i);
-                        //    if (index < 0) break;
-                        //    Count3++;
-                        //    i += index + 1;
-                        //}
-                        //if (Count1 > Count2 && Count1 > Count3)
-                        //{
-                        //    sp.Write("fist");
-                        //    infoTextBox.Clear();
-                        //    Count1 = 0;
-                        //    Count2 = 0;
-                        //    Count3 = 0;
-
-                        //}
-                        //if (Count2 > Count1 && Count2 > Count3)
-                        //{
-                        //    sp.Write("click");
-                        //    infoTextBox.Clear();
-                        //    Count1 = 0;
-                        //    Count2 = 0;
-                        //    Count3 = 0;
-                        //}
-                        //if (Count3 > Count2 && Count3 > Count1)
-                        //{
-                        //    sp.Write("spreadfinger");
-                        //    infoTextBox.Clear();
-                        //    Count1 = 0;
-                        //    Count2 = 0;
-                        //    Count3 = 0;
-                        //}
-
-
+                        MessageBox.Show("识别成功：手势为握拳");
 
                     }
+                    else if (infoTextBox.Text == "v_sign")
+                    {
+                        sp.Write("v_sign");
+
+                        infoTextBox.Clear();
+                        Thread.Sleep(100);
+                        infoTextBox.Enabled = true;
+                        sp.Close();
+
+                        MessageBox.Show("识别成功：手势为动作v");
+                    }
+                    else if (infoTextBox.Text == "spreadfinger")
+                    {
+                        sp.Write("spreadfinger");
+                        infoTextBox.Clear();
+                        Thread.Sleep(100);
+                        infoTextBox.Enabled = true;
+                        sp.Close();
+
+                        MessageBox.Show("识别成功：手势为打开手掌");
+
+                    }
+
+
+
+
                 }
-                catch
-                {
-                    MessageBox.Show("串口尚未连接，" + "\n" + "数据发送失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                }
+            }
+            catch
+            {
+                MessageBox.Show("串口尚未连接，" + "\n" + "数据发送失败！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
 
 
-            
+
         }
 
         private void MainForm_Load(object sender, EventArgs e)
